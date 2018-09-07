@@ -8,11 +8,11 @@ namespace RtmHub.Models
     public class ChatDto
     {
         string description;
-        string userhandle;
+        int userid;
         string customerhandle;
 
         public string Description { get => description; set => description = value; }
-        public string Userhandle { get => userhandle; set => userhandle = value; }
         public string Customerhandle { get => customerhandle; set => customerhandle = value; }
+        public int Userid { get => userid; set => userid = value; }
     }
 }

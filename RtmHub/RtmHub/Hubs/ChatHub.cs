@@ -32,17 +32,17 @@ namespace RtmHub.Hubs
             {
                 if (UserHandler.dict.TryGetValue(c, out ClientWrapper a))
                 {
-                    await Clients.Client(a.Client.Connectionid).SendAsync("ReceiveMessage", user, message);
-                    await Clients.Caller.SendAsync("ReceiveMessage", user, message);
+                
 
                     Conversation converse = new Conversation();
-                    
+
                     converse.To = c.Client;
                     converse.From = a.Client;
                     converse.Text = message;
                     converse.TimeStamp = DateTime.Now.ToString();
 
                     MongoTicket ExistTicket = da.GetTicket(c.TicketId);
+                    
 
                     if (ExistTicket == null)
                     {
@@ -54,6 +54,9 @@ namespace RtmHub.Hubs
                         ExistTicket.Conversations.Add(converse);
                         da.PutTicket(ExistTicket);
                     }
+
+                    await Clients.Client(a.Client.Connectionid).SendAsync("ReceiveMessage", user, message, converse);
+                    await Clients.Caller.SendAsync("ReceiveMessage", user, message, converse);
                 }
             }
             else
@@ -62,8 +65,7 @@ namespace RtmHub.Hubs
                 {
                     if (kv.Value == c)
                     {
-                        await Clients.Client(kv.Key.Client.Connectionid).SendAsync("ReceiveMessage", user, message);
-                        await Clients.Caller.SendAsync("ReceiveMessage", user, message);
+                        
 
                         Conversation converse = new Conversation();
                         converse.To =  c.Client;
@@ -84,6 +86,9 @@ namespace RtmHub.Hubs
                             da.PutTicket(ExistTicket);
                         }
 
+                        await Clients.Client(kv.Key.Client.Connectionid).SendAsync("ReceiveMessage",user ,  message, converse);
+                        await Clients.Caller.SendAsync("ReceiveMessage", user, message, converse);
+
                     }
                 }
             }
@@ -96,7 +101,6 @@ namespace RtmHub.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            var k = Context.ConnectionId;
             return base.OnDisconnectedAsync(exception);
         }
 
@@ -108,7 +112,7 @@ namespace RtmHub.Hubs
             if (designation == "user")
             {
 
-                var enduserrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5001/api/endusers/query?Email=" + userInput);
+                var enduserrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5002/api/endusers/query?Email=" + userInput);
                 var enduserresult = await enduserrespone.Content.ReadAsStringAsync();
 
                 EndUser enduser = JsonConvert.DeserializeObject<EndUser>(enduserresult);
@@ -124,7 +128,7 @@ namespace RtmHub.Hubs
                     c.Query = query;
 
                     ChatDto bodyobj = new ChatDto();
-                    bodyobj.Userhandle = c.Clientemail;
+                    bodyobj.Userid = enduser.Id;
                     bodyobj.Description = c.Query;
                     bodyobj.Customerhandle = "StackRoute";
 
@@ -154,7 +158,7 @@ namespace RtmHub.Hubs
             if (designation == "agent")
             {
 
-                var agentrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5001/api/agents/query?Email=" + userInput);
+                var agentrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5002/api/agents/query?Email=" + userInput);
                 var agentresult = await agentrespone.Content.ReadAsStringAsync();
                 Agent agent = JsonConvert.DeserializeObject<Agent>(agentresult);
 

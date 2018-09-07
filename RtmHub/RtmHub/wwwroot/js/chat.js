@@ -20,12 +20,13 @@ document.getElementById("configButton").addEventListener("click", function (even
         return console.error(err.toString());
     });
 
-    connection.on("ReceiveMessage", function (user, message) {
+    connection.on("ReceiveMessage", function (user,message,converse) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = user + " says " + msg;
         var li = document.createElement("li");
         li.textContent = encodedMsg;
         document.getElementById("messagesList").appendChild(li);
+        console.log(converse.toString());
     });
 
     connection.on("ErrorMessage", function () {
