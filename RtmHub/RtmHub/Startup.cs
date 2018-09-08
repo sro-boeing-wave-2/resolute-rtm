@@ -34,6 +34,11 @@ namespace RtmHub
 
             services.AddSignalR();
 
+            services.AddCors(
+                options => options.AddPolicy("allowaccess",
+                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+                ));
+
             //hubOptions =>
             //{
             //    hubOptions.EnableDetailedErrors = true;
@@ -55,8 +60,7 @@ namespace RtmHub
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            app.UseCors("allowaccess");
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
@@ -64,7 +68,6 @@ namespace RtmHub
             {
                 routes.MapHub<ChatHub>("/chatHub");
             });
-
             app.UseMvc();
         }
     }

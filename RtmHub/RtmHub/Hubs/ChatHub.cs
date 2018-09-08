@@ -21,7 +21,7 @@ namespace RtmHub.Hubs
 
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(string message)
         {
             ClientWrapper c = UserHandler.client.Find(x => x.Client.Connectionid == Context.ConnectionId);
 
@@ -55,8 +55,8 @@ namespace RtmHub.Hubs
                         da.PutTicket(ExistTicket);
                     }
 
-                    await Clients.Client(a.Client.Connectionid).SendAsync("ReceiveMessage", user, message, converse);
-                    await Clients.Caller.SendAsync("ReceiveMessage", user, message, converse);
+                    await Clients.Client(a.Client.Connectionid).SendAsync("ReceiveMessage",converse);
+                    await Clients.Caller.SendAsync("ReceiveMessage", converse);
                 }
             }
             else
@@ -86,8 +86,8 @@ namespace RtmHub.Hubs
                             da.PutTicket(ExistTicket);
                         }
 
-                        await Clients.Client(kv.Key.Client.Connectionid).SendAsync("ReceiveMessage",user ,  message, converse);
-                        await Clients.Caller.SendAsync("ReceiveMessage", user, message, converse);
+                        await Clients.Client(kv.Key.Client.Connectionid).SendAsync("ReceiveMessage",converse);
+                        await Clients.Caller.SendAsync("ReceiveMessage",converse);
 
                     }
                 }
@@ -112,7 +112,7 @@ namespace RtmHub.Hubs
             if (designation == "user")
             {
 
-                var enduserrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5002/api/endusers/query?Email=" + userInput);
+                var enduserrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5001/api/endusers/query?Email=" + userInput);
                 var enduserresult = await enduserrespone.Content.ReadAsStringAsync();
 
                 EndUser enduser = JsonConvert.DeserializeObject<EndUser>(enduserresult);
@@ -131,6 +131,8 @@ namespace RtmHub.Hubs
                     bodyobj.Userid = enduser.Id;
                     bodyobj.Description = c.Query;
                     bodyobj.Customerhandle = "StackRoute";
+                    bodyobj.Connectionid = c.Connectionid;
+                    
 
                     HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, "http://172.23.238.239:8083/api/Tickets")
                     {
@@ -158,7 +160,7 @@ namespace RtmHub.Hubs
             if (designation == "agent")
             {
 
-                var agentrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5002/api/agents/query?Email=" + userInput);
+                var agentrespone = await UserHandler.httpclient.GetAsync("http://172.23.238.225:5001/api/agents/query?Email=" + userInput);
                 var agentresult = await agentrespone.Content.ReadAsStringAsync();
                 Agent agent = JsonConvert.DeserializeObject<Agent>(agentresult);
 

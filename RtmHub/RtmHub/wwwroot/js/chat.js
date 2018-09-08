@@ -20,11 +20,11 @@ document.getElementById("configButton").addEventListener("click", function (even
         return console.error(err.toString());
     });
 
-    connection.on("ReceiveMessage", function (user,message,converse) {
-        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + " says " + msg;
+    connection.on("ReceiveMessage", function (converse) {
+        var msg = converse.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        //var encodedMsg = user + " says " + msg;
         var li = document.createElement("li");
-        li.textContent = encodedMsg;
+        li.textContent = msg;
         document.getElementById("messagesList").appendChild(li);
         console.log(converse.toString());
     });
@@ -33,14 +33,13 @@ document.getElementById("configButton").addEventListener("click", function (even
         var msg = "Please Enter the Email Again";
         document.getElementById("err").innerHTML = msg;
     });
-    
 });
 
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
+    connection.invoke("SendMessage", message).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
