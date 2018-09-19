@@ -16,7 +16,7 @@ namespace RtmHub.DataAccess
 
         public DataAccess()
         {
-            _client = new MongoClient("mongodb://localhost:27017");
+            _client = new MongoClient("mongodb://sankalp:test123@mongo");
             _db = _client.GetDatabase("temp2");
         }
         
