@@ -112,7 +112,7 @@ namespace RtmHub.Hubs
             if (designation == "user")
             {
 
-                var enduserrespone = await UserHandler.httpclient.GetAsync("http://localhost:8082/api/endusers/query?Email=" + userInput);
+                var enduserrespone = await UserHandler.httpclient.GetAsync("http://35.221.125.153:8082/api/endusers/query?Email=" + userInput);
                 var enduserresult = await enduserrespone.Content.ReadAsStringAsync();
 
                 EndUser enduser = JsonConvert.DeserializeObject<EndUser>(enduserresult);
@@ -128,13 +128,13 @@ namespace RtmHub.Hubs
                     c.Query = query;
 
                     ChatDto bodyobj = new ChatDto();
-                    bodyobj.Userid = enduser.Id;
+                    bodyobj.Userid = enduser.endUserId;
                     bodyobj.Description = c.Query;
                     bodyobj.Customerhandle = "StackRoute";
                     bodyobj.Connectionid = c.Connectionid;
                     
 
-                    HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8083/api/Tickets")
+                    HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, "http://35.221.125.153:8083/api/Tickets")
                     {
                         Content = new StringContent(JsonConvert.SerializeObject(bodyobj), UnicodeEncoding.UTF8, "application/json")
                     };
@@ -160,7 +160,7 @@ namespace RtmHub.Hubs
             if (designation == "agent")
             {
 
-                var agentrespone = await UserHandler.httpclient.GetAsync("http://localhost:8082/api/agents/query?Email=" + userInput);
+                var agentrespone = await UserHandler.httpclient.GetAsync("http://35.221.125.153:8082/api/agents/query?Email=" + userInput);
                 var agentresult = await agentrespone.Content.ReadAsStringAsync();
                 Agent agent = JsonConvert.DeserializeObject<Agent>(agentresult);
 

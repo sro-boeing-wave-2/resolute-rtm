@@ -20,7 +20,7 @@ namespace RtmHub.Models
         DateTime updatedOn;
         long updatedBy;
         [Key]
-        public int Id { get => id; set => id = value; }
+        public int endUserId { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string Email { get => email; set => email = value; }
         public string Phone_no { get => phone_no; set => phone_no = value; }
