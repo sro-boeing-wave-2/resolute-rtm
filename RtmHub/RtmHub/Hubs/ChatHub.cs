@@ -111,8 +111,10 @@ namespace RtmHub.Hubs
 
             if (designation == "user")
             {
-
-                var enduserrespone = await UserHandler.httpclient.GetAsync("http://35.221.125.153:8082/api/endusers/query?Email=" + userInput);
+                String url = "http://35.221.125.153/endusers/query?Email=" + userInput;
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+                requestMessage.Headers.Add("Access", "Allow_Service");
+                var enduserrespone = await UserHandler.httpclient.SendAsync(requestMessage);
                 var enduserresult = await enduserrespone.Content.ReadAsStringAsync();
 
                 EndUser enduser = JsonConvert.DeserializeObject<EndUser>(enduserresult);
@@ -134,11 +136,11 @@ namespace RtmHub.Hubs
                     bodyobj.Connectionid = c.Connectionid;
                     
 
-                    HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, "http://35.221.125.153:8083/api/Tickets")
+                    HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, "http://35.221.125.153/Tickets")
                     {
                         Content = new StringContent(JsonConvert.SerializeObject(bodyobj), UnicodeEncoding.UTF8, "application/json")
                     };
-
+                    postMessage.Headers.Add("Access", "Allow_Service");
                     var response = await UserHandler.httpclient.SendAsync(postMessage);
                     var responseString = await response.Content.ReadAsStringAsync();
 
@@ -159,8 +161,10 @@ namespace RtmHub.Hubs
               
             if (designation == "agent")
             {
-
-                var agentrespone = await UserHandler.httpclient.GetAsync("http://35.221.125.153:8082/api/agents/query?Email=" + userInput);
+                String url = "http://35.221.125.153/agents/query?Email=" + userInput;
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+                requestMessage.Headers.Add("Access", "Allow_Service");
+                var agentrespone = await UserHandler.httpclient.SendAsync(requestMessage);
                 var agentresult = await agentrespone.Content.ReadAsStringAsync();
                 Agent agent = JsonConvert.DeserializeObject<Agent>(agentresult);
 
