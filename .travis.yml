@@ -9,6 +9,6 @@ mono: none
 dotnet: 2.1
 script:
   - dotnet restore
-  - chmod +x ./../deploy.sh
+  - chmod +x ./deploy.sh
 after_success: 
-  - /bin/bash ./../deploy.sh
+  - /bin/bash ./deploy.sh
