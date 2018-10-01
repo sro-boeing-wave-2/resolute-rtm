@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using DotNetEnv;
 
 namespace RTM_Chat
 {
@@ -14,6 +15,7 @@ namespace RTM_Chat
     {
         public static void Main(string[] args)
         {
+            Env.Load("./machine_config/.env");
             CreateWebHostBuilder(args).Build().Run();
         }
 

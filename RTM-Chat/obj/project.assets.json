@@ -29,6 +29,18 @@
           "lib/netstandard1.3/DnsClient.dll": {}
         }
       },
+      "DotNetEnv/1.2.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/DotNetEnv.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/DotNetEnv.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4801,6 +4813,16 @@
         "lib/net45/DnsClient.xml",
         "lib/netstandard1.3/DnsClient.dll",
         "lib/netstandard1.3/DnsClient.xml"
+      ]
+    },
+    "DotNetEnv/1.2.0": {
+      "sha512": "TT7pY8szkPDptJPDt/Uct/rgrkpfx2TdzFprDjU1Il3h6lRhG1xI3spw58CbtcFF68XTSGlaoydMRiFi92GLyw==",
+      "type": "package",
+      "path": "dotnetenv/1.2.0",
+      "files": [
+        "dotnetenv.1.2.0.nupkg.sha512",
+        "dotnetenv.nuspec",
+        "lib/netstandard1.3/DotNetEnv.dll"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -12610,6 +12632,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "DotNetEnv >= 1.2.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
       "mongocsharpdriver >= 2.7.0"
@@ -12622,11 +12645,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\resolute\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
+      "projectUniqueName": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
       "projectName": "RTM_Chat",
-      "projectPath": "E:\\resolute\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
+      "projectPath": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "E:\\resolute\\resolute-rtm\\RTM-Chat\\obj\\",
+      "outputPath": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12656,6 +12679,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "DotNetEnv": {
+            "target": "Package",
+            "version": "[1.2.0, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",

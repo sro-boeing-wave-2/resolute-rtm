@@ -16,9 +16,9 @@ namespace RTM_Chat.Hubs
 {
     public class ChatHub : Hub
     {
-        public string enduserurl = "http://35.221.125.153/endusers/query?Email=";
-        public string agenturl = "http://35.221.125.153/agents/query?Email=";
-        public string ticketurl = "http://35.221.76.107/Tickets";
+        public string enduserurl = Constants.BASE_URL + ":" + Constants.ENDUSER_URL;
+        //public string agenturl = "http://35.221.125.153/agents/query?Email=";
+        public string ticketurl = Constants.BASE_URL + ":" + Constants.TICKET_URL;
 
         public IMessageThreadService _service;
 

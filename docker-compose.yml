@@ -1,15 +1,15 @@
 version: "3.1"
 services:
     web:
+      container_name: Rtm-Chat
       build: RTM-Chat/
-      ports:
-        - "80:5000"
+      labels:
+          SERVICE_80_NAME: Rtm-Chat
+          SERVICE_TAG : RtmChat
       depends_on:
         - mongo
+      volumes:
+        - "/machine_config:/app/machine_config"
     mongo:
       image: mongo:4.1
       restart: always
-      environment:
-        MONGO_INITDB_DATABASE: MongoConversation
-      ports:
-        - "27020:27017"
