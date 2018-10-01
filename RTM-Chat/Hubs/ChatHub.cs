@@ -122,8 +122,9 @@ namespace RTM_Chat.Hubs
         }
         public void Handover(string threadId , object data)
         {
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, ticketurl + "/assignagent/"+threadId);
+            requestMessage.Headers.Add("Access", "Allow_Service");
             Console.WriteLine(threadId);
-
         }
     }
 }

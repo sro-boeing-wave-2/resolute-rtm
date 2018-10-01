@@ -12645,11 +12645,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
+      "projectUniqueName": "E:\\resolute\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
       "projectName": "RTM_Chat",
-      "projectPath": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
+      "projectPath": "E:\\resolute\\resolute-rtm\\RTM-Chat\\RTM_Chat.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "E:\\resolute chathub\\resolute-rtm\\RTM-Chat\\obj\\",
+      "outputPath": "E:\\resolute\\resolute-rtm\\RTM-Chat\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
