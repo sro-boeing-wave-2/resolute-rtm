@@ -1,11 +1,11 @@
 version: "3.1"
 services:
     web:
-      container_name: Rtm-Chat
+      container_name: rtm
       build: RTM-Chat/
       labels:
-          SERVICE_80_NAME: Rtm-Chat
-          SERVICE_TAG : RtmChat
+          SERVICE_80_NAME: rtm
+          SERVICE_TAG : rtm
       depends_on:
         - mongo
       volumes:
@@ -13,3 +13,5 @@ services:
     mongo:
       image: mongo:4.1
       restart: always
+      volumes:
+        - "/data/rtm:/var/lib/mongodb"
