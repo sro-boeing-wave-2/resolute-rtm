@@ -18,7 +18,7 @@
     "RTM_Chat": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://0.0.0.0:5000",
+      "applicationUrl": "http://0.0.0.0:80",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
