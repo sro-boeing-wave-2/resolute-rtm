@@ -136,6 +136,24 @@ namespace RTM_Chat.Hubs
             Console.WriteLine(messageobj.MessageText);
             Console.WriteLine(response.Result);
         }
+
+        public void Handover2(string threadId){
+            HttpClient httpClient = new HttpClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, ticketurl + "/assignagent/"+threadId);
+            requestMessage.Headers.Add("Access", "Allow_Service");
+            var response =  httpClient.SendAsync(requestMessage);
+
+            Message messageobj = new Message();
+            
+            messageobj.Name = "bot";
+            messageobj.Timestamp = DateTime.Now;
+            messageobj.EmailId = "bot@gmail.com";
+            messageobj.MessageText = "I'm sorry, I'm not able to find a solution to your query. Let me transfer you to an agent.";
+            
+            Clients.All.SendAsync("message",messageobj);
+            ClientHandler.clienthandler[threadId].MessageDetails.Add(messageobj);
+
+        }
     
         public void SolutionEnd(){
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
@@ -151,8 +169,8 @@ namespace RTM_Chat.Hubs
             var response =  httpClient.SendAsync(requestMessage);
             }
 
-            if(feedback == 1){
-                Handover(groupId);
+            else if(feedback == 1){
+                Handover2(groupId);
             }
         } 
 
