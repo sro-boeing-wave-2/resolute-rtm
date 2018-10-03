@@ -108,16 +108,12 @@ namespace RTM_Chat.Hubs
 
         public async void SendMessage(Message messageobj)
         {
-            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
-            //string groupId = "test";
-            
+            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];            
             messageobj.Timestamp = DateTime.Now;
             
             await Clients.GroupExcept(groupId , Context.ConnectionId).SendAsync("message", messageobj);
             ClientHandler.clienthandler[groupId].MessageDetails.Add(messageobj);
             Console.WriteLine(messageobj.MessageText);
-            //if(ClientHandler.clienthandler[groupId].MessageDetails.Count == 20){
-            //}
         }
         public void Handover(string threadId)
         {
@@ -127,7 +123,6 @@ namespace RTM_Chat.Hubs
             var response =  httpClient.SendAsync(requestMessage);
 
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
-            //string groupId = "test";
 
             Message messageobj = new Message();
             
@@ -142,7 +137,26 @@ namespace RTM_Chat.Hubs
             Console.WriteLine(response.Result);
         }
     
-    
+        public void SolutionEnd(){
+            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback");
+        }
+
+        public void SetFeedback(int feedback){
+            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            if(feedback == 5){
+            HttpClient httpClient = new HttpClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl +groupId + "?status=close&feedbackscore="+feedback);
+            requestMessage.Headers.Add("Access", "Allow_Service");
+            var response =  httpClient.SendAsync(requestMessage);
+            }
+
+            if(feedback == 1){
+                Handover(groupId);
+            }
+        } 
+
+
         public List<Message> GetConversation(string threadId){
             List<Message> result = _service.GetListMessageThread(threadId);
             return result;
