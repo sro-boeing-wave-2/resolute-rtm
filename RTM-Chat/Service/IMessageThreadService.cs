@@ -1,4 +1,6 @@
 using RTM_Chat.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RTM_Chat.Services
 {
@@ -6,5 +8,7 @@ namespace RTM_Chat.Services
     {
         MessageThread GetMessageThreadByTicketId(string ticketId);
         MessageThread CreateMessageThread(MessageThread messageThread);
+
+        List<Message> GetListMessageThread(string threadid);
     }
 }

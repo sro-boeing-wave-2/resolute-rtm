@@ -17,7 +17,6 @@ namespace RTM_Chat.Hubs
     public class ChatHub : Hub
     {
         public string enduserurl = Constants.BASE_URL + ":" + Constants.ENDUSER_URL;
-        //public string agenturl = "http://35.221.125.153/agents/query?Email=";
         public string ticketurl = Constants.BASE_URL + ":" + Constants.TICKET_URL;
 
         public IMessageThreadService _service;
@@ -120,11 +119,33 @@ namespace RTM_Chat.Hubs
             //if(ClientHandler.clienthandler[groupId].MessageDetails.Count == 20){
             //}
         }
-        public void Handover(string threadId , object data)
+        public void Handover(string threadId)
         {
+            HttpClient httpClient = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, ticketurl + "/assignagent/"+threadId);
             requestMessage.Headers.Add("Access", "Allow_Service");
-            Console.WriteLine(threadId);
+            var response =  httpClient.SendAsync(requestMessage);
+
+            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            //string groupId = "test";
+
+            Message messageobj = new Message();
+            
+            messageobj.Name = "bot";
+            messageobj.Timestamp = DateTime.Now;
+            messageobj.EmailId = "bot@gmail.com";
+            messageobj.MessageText = "I'm sorry, I'm not able to find a solution to your query. Let me transfer you to an agent.";
+            
+            Clients.GroupExcept(groupId , Context.ConnectionId).SendAsync("message", messageobj);
+            ClientHandler.clienthandler[groupId].MessageDetails.Add(messageobj);
+            Console.WriteLine(messageobj.MessageText);
+            Console.WriteLine(response.Result);
+        }
+    
+    
+        public List<Message> GetConversation(string threadId){
+            List<Message> result = _service.GetListMessageThread(threadId);
+            return result;
         }
     }
 }
