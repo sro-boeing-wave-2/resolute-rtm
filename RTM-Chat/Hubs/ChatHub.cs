@@ -146,7 +146,7 @@ namespace RTM_Chat.Hubs
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
             if(feedback == 5){
             HttpClient httpClient = new HttpClient();
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl +groupId + "?status=close&feedbackscore="+feedback);
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl +"/"+groupId + "?status=close&feedbackscore="+feedback);
             requestMessage.Headers.Add("Access", "Allow_Service");
             var response =  httpClient.SendAsync(requestMessage);
             }
