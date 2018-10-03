@@ -121,20 +121,24 @@ namespace RTM_Chat.Hubs
         }
         public void Handover(string threadId)
         {
+            Message messageobj = new Message();
+            messageobj.Name = "bot";
+            messageobj.Timestamp = DateTime.Now;
+            messageobj.EmailId = "bot@gmail.com";
+            messageobj.MessageText = "IN Handover";
+            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            Clients.GroupExcept(groupId , Context.ConnectionId).SendAsync("message", messageobj);
+
+
             HttpClient httpClient = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, ticketurl + "/assignagent/"+threadId);
             requestMessage.Headers.Add("Access", "Allow_Service");
             var response =  httpClient.SendAsync(requestMessage);
-
-            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            
             //string groupId = "test";
 
-            Message messageobj = new Message();
             
-            messageobj.Name = "bot";
-            messageobj.Timestamp = DateTime.Now;
-            messageobj.EmailId = "bot@gmail.com";
-            messageobj.MessageText = "I'm sorry, I'm not able to find a solution to your query. Let me transfer you to an agent.";
+            messageobj.MessageText = response.ToString();
             
             Clients.GroupExcept(groupId , Context.ConnectionId).SendAsync("message", messageobj);
             ClientHandler.clienthandler[groupId].MessageDetails.Add(messageobj);
