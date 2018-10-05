@@ -7,6 +7,7 @@ using RTM_Chat.Data;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization;
 using System.Threading.Tasks;
+using System;
 
 namespace RTM_Chat.Services
 {
@@ -34,6 +35,7 @@ namespace RTM_Chat.Services
         public List<Message> GetListMessageThread(string threadid){
             var filter = Builders<MessageThread>.Filter.Eq("TicketId",threadid);
             MessageThread messageThread = _context.MessageThreadCollection.Find(filter).FirstOrDefault();
+            Console.WriteLine("" + threadid + messageThread.ToString());
             return messageThread.MessageDetails;
         }
     }
