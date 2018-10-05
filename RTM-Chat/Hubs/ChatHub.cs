@@ -62,8 +62,7 @@ namespace RTM_Chat.Hubs
             }
             return base.OnDisconnectedAsync(exception);
         }
-
-
+        
         // User Says...
         public async Task AllocateMeAnAgent(string userInput, string query)
 
@@ -115,7 +114,7 @@ namespace RTM_Chat.Hubs
             if (":resolve".Equals(messageobj.MessageText))
             {
                 var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
-                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback");
+                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback1");
             }
             else
             {
@@ -174,8 +173,10 @@ namespace RTM_Chat.Hubs
         }
 
         public void SetFeedback(int feedback){
+
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
             Console.WriteLine(""+feedback+groupId);
+
             if(feedback == 5){
             HttpClient httpClient = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl +"/"+groupId + "?status=close&feedbackscore="+feedback);
@@ -185,6 +186,14 @@ namespace RTM_Chat.Hubs
 
             else if(feedback == 1){
                 Handover2(groupId);
+            }
+
+            else if(feedback == -1)
+            {
+                HttpClient httpClient = new HttpClient();
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl + "/" + groupId + "?status=close&feedbackscore=" + feedback);
+                requestMessage.Headers.Add("Access", "Allow_Service");
+                var response = httpClient.SendAsync(requestMessage);
             }
         } 
 
