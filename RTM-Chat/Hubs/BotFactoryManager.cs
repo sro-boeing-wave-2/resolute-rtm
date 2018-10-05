@@ -13,6 +13,7 @@ namespace RTM_Chat.Hubs
         {
             get
             {
+                Console.WriteLine($"{BotFactoryManager.Factories.Count}");
                 if (BotFactoryManager.Factories.Count > 0)
                 {
                     var factoryToBeReturned = BotFactoryManager.Factories.Take(1).First();
