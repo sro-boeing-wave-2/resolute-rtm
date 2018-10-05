@@ -63,58 +63,71 @@ namespace RTM_Chat.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
+
         // User Says...
         public async Task AllocateMeAnAgent(string userInput, string query)
 
         {
-            Console.WriteLine(userInput, query);
-            //Create a Ticket
-            HttpClient httpClient = new HttpClient();
-            ChatDto ticketDto = new ChatDto() {Query = query , Useremail = userInput };
-            HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, ticketurl+"/create")
+            if (!query.StartsWith('#'))
             {
-               Content = new StringContent(JsonConvert.SerializeObject(ticketDto), UnicodeEncoding.UTF8, "application/json")
-            };
-            postMessage.Headers.Add("Access", "Allow_Service");
+                Console.WriteLine(userInput, query);
+                //Create a Ticket
+                HttpClient httpClient = new HttpClient();
+                ChatDto ticketDto = new ChatDto() { Query = query, Useremail = userInput };
+                HttpRequestMessage postMessage = new HttpRequestMessage(HttpMethod.Post, ticketurl + "/create")
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(ticketDto), UnicodeEncoding.UTF8, "application/json")
+                };
+                postMessage.Headers.Add("Access", "Allow_Service");
 
-            Console.WriteLine(postMessage);
+                Console.WriteLine(postMessage);
 
-            var response = await httpClient.SendAsync(postMessage);
-            var responseString = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseString);
+                var response = await httpClient.SendAsync(postMessage);
+                var responseString = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseString);
 
-            string[] responsesplit = responseString.Split(',');
-            string ticketid = responsesplit[0].Split(':')[1].Replace("\"", "" );
-            
-
-            //Add to ClientMapper
-            ClientHandler.clienthandler[ticketid] = new MessageThread() {TicketId=ticketid , MessageDetails = new List<Message>()};
-
-            
-            var groupId = ticketid;
-            Console.WriteLine(groupId);
+                string[] responsesplit = responseString.Split(',');
+                string ticketid = responsesplit[0].Split(':')[1].Replace("\"", "");
 
 
-            GroupHandler.UserGroupMapper.Add(Context.ConnectionId , groupId);
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
+                //Add to ClientMapper
+                ClientHandler.clienthandler[ticketid] = new MessageThread() { TicketId = ticketid, MessageDetails = new List<Message>() };
 
 
-            var BotFactory = BotFactoryManager.Factory;
-            if (!string.IsNullOrEmpty(BotFactory))
-            {
-              await Clients.Client(BotFactory).SendAsync("AllocateMeABot", groupId, query);
+                var groupId = ticketid;
+                Console.WriteLine(groupId);
+
+
+                GroupHandler.UserGroupMapper.Add(Context.ConnectionId, groupId);
+                await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
+
+
+                var BotFactory = BotFactoryManager.Factory;
+                if (!string.IsNullOrEmpty(BotFactory))
+                {
+                    await Clients.Client(BotFactory).SendAsync("AllocateMeABot", groupId, query);
+                }
             }
         }
 
         public async void SendMessage(Message messageobj)
         {
-            var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];            
-            messageobj.Timestamp = DateTime.Now;
-            
-            await Clients.GroupExcept(groupId , Context.ConnectionId).SendAsync("message", messageobj);
-            ClientHandler.clienthandler[groupId].MessageDetails.Add(messageobj);
-            Console.WriteLine(messageobj.MessageText);
+            if (":resolve".Equals(messageobj.MessageText))
+            {
+                var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback");
+            }
+            else
+            {
+                var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+                messageobj.Timestamp = DateTime.Now;
+
+                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("message", messageobj);
+                ClientHandler.clienthandler[groupId].MessageDetails.Add(messageobj);
+                Console.WriteLine(messageobj.MessageText);
+            }
         }
+
         public void Handover(string threadId)
         {
             HttpClient httpClient = new HttpClient();
@@ -162,6 +175,7 @@ namespace RTM_Chat.Hubs
 
         public void SetFeedback(int feedback){
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
+            Console.WriteLine(""+feedback+groupId);
             if(feedback == 5){
             HttpClient httpClient = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, ticketurl +"/"+groupId + "?status=close&feedbackscore="+feedback);
@@ -173,7 +187,6 @@ namespace RTM_Chat.Hubs
                 Handover2(groupId);
             }
         } 
-
 
         public List<Message> GetConversation(string threadId){
             List<Message> result = _service.GetListMessageThread(threadId);
