@@ -9,7 +9,7 @@ namespace RTM_Chat.IO
     {
         public static string BASE_URL = "http://" + Environment.GetEnvironmentVariable("MACHINE_LOCAL_IPV4");
         public static string ENDUSER_URL = "/endusers/query?Email=";
-        public static string TICKET_URL = "/Tickets";
+        public static string TICKET_URL = "/tickets";
        
     }
 }

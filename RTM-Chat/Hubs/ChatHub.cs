@@ -62,7 +62,6 @@ namespace RTM_Chat.Hubs
             }
             return base.OnDisconnectedAsync(exception);
         }
-        
         // User Says...
         public async Task AllocateMeAnAgent(string userInput, string query)
 
@@ -158,7 +157,7 @@ namespace RTM_Chat.Hubs
 
             HttpRequestMessage requestMessage2 = new HttpRequestMessage(HttpMethod.Put, ticketurl + "/" + threadId + "?status=open");
             requestMessage2.Headers.Add("Access", "Allow_Service");
-            var response2 = httpClient.SendAsync(requestMessage);
+            var response2 = httpClient.SendAsync(requestMessage2);
 
             Message messageobj = new Message();
             
@@ -178,7 +177,6 @@ namespace RTM_Chat.Hubs
         }
 
         public void SetFeedback(int feedback){
-
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
             Console.WriteLine(""+feedback+groupId);
 
