@@ -189,6 +189,7 @@ namespace RTM_Chat.Hubs
         } 
 
         public List<Message> GetConversation(string threadId){
+            Console.WriteLine("Thread id =" + threadId);
             List<Message> result = _service.GetListMessageThread(threadId);
             return result;
         }
