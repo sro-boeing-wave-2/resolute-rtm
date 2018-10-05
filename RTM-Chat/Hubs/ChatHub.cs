@@ -114,7 +114,7 @@ namespace RTM_Chat.Hubs
             if (":resolve".Equals(messageobj.MessageText))
             {
                 var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
-                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback1");
+                await Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedbackAgent");
             }
             else
             {
@@ -199,8 +199,15 @@ namespace RTM_Chat.Hubs
 
         public List<Message> GetConversation(string threadId){
             Console.WriteLine("Thread id =" + threadId);
-            List<Message> result = _service.GetListMessageThread(threadId);
-            return result;
+            if(ClientHandler.clienthandler.ContainsKey(threadId))
+            {
+                return ClientHandler.clienthandler[threadId].MessageDetails;
+            }
+            else
+            {
+                List<Message> result = _service.GetListMessageThread(threadId);
+                return result;
+            }
         }
     }
 }
