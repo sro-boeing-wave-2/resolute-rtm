@@ -156,6 +156,10 @@ namespace RTM_Chat.Hubs
             requestMessage.Headers.Add("Access", "Allow_Service");
             var response =  httpClient.SendAsync(requestMessage);
 
+            HttpRequestMessage requestMessage2 = new HttpRequestMessage(HttpMethod.Put, ticketurl + "/" + threadId + "?status=open");
+            requestMessage.Headers.Add("Access", "Allow_Service");
+            var response2 = httpClient.SendAsync(requestMessage);
+
             Message messageobj = new Message();
             
             messageobj.Name = "bot";
