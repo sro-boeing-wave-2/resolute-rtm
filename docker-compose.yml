@@ -6,6 +6,7 @@ services:
       labels:
           SERVICE_80_NAME: rtm
           SERVICE_TAG : rtm
+      restart: always
       depends_on:
         - mongo
       volumes:
