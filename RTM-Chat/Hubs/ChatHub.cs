@@ -104,6 +104,7 @@ namespace RTM_Chat.Hubs
                 Console.WriteLine($"Value of BotFactory Manager {BotFactory}");
                 if (!string.IsNullOrEmpty(BotFactory))
                 {
+                    Console.WriteLine("calling allocatemeabot");
                     await Clients.Client(BotFactory).SendAsync("AllocateMeABot", groupId, query);
                 }
             }
