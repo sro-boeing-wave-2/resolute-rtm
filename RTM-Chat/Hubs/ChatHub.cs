@@ -64,7 +64,6 @@ namespace RTM_Chat.Hubs
         }
         // User Says...
         public async Task AllocateMeAnAgent(string userInput, string query)
-
         {
             if (!query.StartsWith('#'))
             {
@@ -102,6 +101,12 @@ namespace RTM_Chat.Hubs
 
                 var BotFactory = BotFactoryManager.Factory;
                 Console.WriteLine($"Value of BotFactory Manager {BotFactory}");
+
+                foreach(string x in BotFactoryManager.Factories)
+                {
+                    Console.WriteLine(x);
+                }
+
                 if (!string.IsNullOrEmpty(BotFactory))
                 {
                     Console.WriteLine("calling allocatemeabot");
