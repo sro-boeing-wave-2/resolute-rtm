@@ -144,7 +144,7 @@ namespace RTM_Chat.Hubs
 
             Message messageobj = new Message();
             
-            messageobj.Name = "bot";
+            messageobj.Name = "ResoluteBot";
             messageobj.Timestamp = DateTime.Now;
             messageobj.EmailId = "bot@gmail.com";
             messageobj.MessageText = "I'm sorry, I'm not able to find a solution to your query. Let me transfer you to an agent.";
@@ -167,7 +167,7 @@ namespace RTM_Chat.Hubs
 
             Message messageobj = new Message();
             
-            messageobj.Name = "bot";
+            messageobj.Name = "ResoluteBot";
             messageobj.Timestamp = DateTime.Now;
             messageobj.EmailId = "bot@gmail.com";
             messageobj.MessageText = "I'm sorry, I'm not able to find a solution to your query. Let me transfer you to an agent.";
