@@ -176,7 +176,9 @@ namespace RTM_Chat.Hubs
             ClientHandler.clienthandler[threadId].MessageDetails.Add(messageobj);
 
         }
-    
+    /// <summary>
+    /// any line
+    /// </summary>
         public void SolutionEnd(){
             var groupId = GroupHandler.UserGroupMapper[Context.ConnectionId];
             Clients.GroupExcept(groupId, Context.ConnectionId).SendAsync("GetFeedback");
